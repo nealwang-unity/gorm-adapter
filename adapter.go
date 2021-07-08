@@ -474,18 +474,7 @@ func (a *Adapter) rawDelete(db *gorm.DB, line CasbinRule) error {
 func (a *Adapter) UpdatePolicy(sec string, ptype string, oldRule, newPolicy []string) error {
 	oldLine := a.savePolicyLine(ptype, oldRule)
 	newLine := a.savePolicyLine(ptype, newPolicy)
-
-	//count := 0
-	//a.db.Model(&oldLine).Where(&oldLine).Count(&count)
-	//print(count) // 1
-
-	//res := a.db.Model(&oldLine).Update(newLine)
-	//print(res.RowsAffected) // 6, that's how many record I have in my database
-
-	res := a.db.Model(&oldLine).Where(&oldLine).Update(newLine)
-	print(res.RowsAffected) // 0
-
-	return res.Error
+	return a.db.Model(&CasbinRule{}).Where(&oldLine).Update(newLine).Error
 }
 
 func (a *Adapter) UpdatePolicies(sec string, ptype string, oldRules, newRules [][]string) error {
